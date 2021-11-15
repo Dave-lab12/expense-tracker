@@ -4,13 +4,13 @@ import '../models/transaction.dart';
 
 class TransactionList extends StatelessWidget {
   final List<Transaction> transactions;
-
-  TransactionList(this.transactions);
+  final Function deleteTX;
+  TransactionList(this.transactions, this.deleteTX);
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 300,
+      height: MediaQuery.of(context).size.height * 0.6,
       child: transactions.isEmpty
           ? Column(
               children: [
@@ -35,43 +35,6 @@ class TransactionList extends StatelessWidget {
             )
           : ListView.builder(
               itemBuilder: (ctx, index) {
-                // return Card(
-                //   child: Row(
-                //     children: [
-                //       Container(
-                //         margin:
-                //             EdgeInsets.symmetric(vertical: 10, horizontal: 15),
-                //         decoration: BoxDecoration(
-                //           border: Border.all(
-                //               color: Theme.of(context).primaryColorLight,
-                //               width: 2),
-                //         ),
-                //         padding: EdgeInsets.all(10),
-                //         child: Text(
-                //           '\$${transactions[index].amount.toStringAsFixed(2)}',
-                //           style: TextStyle(
-                //               fontWeight: FontWeight.w300,
-                //               fontSize: 20,
-                //               color: Theme.of(context).primaryColorDark),
-                //         ),
-                //       ),
-                //       Column(
-                //         crossAxisAlignment: CrossAxisAlignment.start,
-                //         children: [
-                //           Text(
-                //             transactions[index].title,
-                //             style: Theme.of(context).textTheme.title,
-                //             textAlign: TextAlign.end,
-                //           ),
-                //           Text(
-                //             DateFormat.yMMMd().format(transactions[index].date),
-                //             style: TextStyle(color: Colors.grey),
-                //           )
-                //         ],
-                //       )
-                //     ],
-                //   ),
-                // );
                 return Card(
                   elevation: 4,
                   margin: EdgeInsets.symmetric(vertical: 8, horizontal: 5),
@@ -94,7 +57,11 @@ class TransactionList extends StatelessWidget {
                     subtitle: Text(
                       DateFormat.yMMMd().format(transactions[index].date),
                     ),
-                    // trailing: ,
+                    trailing: IconButton(
+                      icon: Icon(Icons.delete),
+                      color: Theme.of(context).errorColor,
+                      onPressed: () => deleteTX(transactions[index].id),
+                    ),
                   ),
                 );
               },

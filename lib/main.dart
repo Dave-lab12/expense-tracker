@@ -17,6 +17,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blueGrey,
         accentColor: Colors.grey,
+        errorColor: Colors.red,
         fontFamily: 'Quicksand',
         textTheme: ThemeData.light()
             .textTheme
@@ -74,6 +75,12 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
+  void _deleteTransaction(String id) {
+    setState(() {
+      _userTransactions.removeWhere((element) => element.id == id);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -88,14 +95,12 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
         body: SingleChildScrollView(
           child: Column(
-            // mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               Container(
-                width: double.infinity,
-                child: Chart(_recentTransactions),
-              ),
-              TransactionList(_userTransactions),
+                  height: MediaQuery.of(context).size.height * 0.43,
+                  child: Chart(_recentTransactions)),
+              TransactionList(_userTransactions, _deleteTransaction),
             ],
           ),
         ),
